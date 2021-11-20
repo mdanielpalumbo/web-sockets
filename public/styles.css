@@ -1,0 +1,36 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+#chat{
+    height:40vh;
+    width:60vw;
+    margin-left:20vw;
+    margin-right:20vw;
+}
+
+#msgs{
+    height:70%;
+    width:100%;
+    overflow:scroll;
+}
+
+.input{
+    height:30%;
+    width:100%;
+    display:flex;
+    flex-flow:row nowrap;
+}
+
+.input input{
+    height:100%;
+    width:80%;
+}
+
+.input button{
+    height:50%;
+    width:20%;
+    border: none;
+
+}
