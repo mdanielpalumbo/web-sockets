@@ -5,10 +5,8 @@ const Contenedor = require('./files/files')
 const handlebars = require('express-handlebars')
 
 const app = express()
-
-const msgsCont = new Contenedor('./files/msgs')
-
-let y_n = true 
+const httpServer = new HttpServer(app)
+const io = new IOServer(httpServer)
 
 app.engine(
     "hbs",
@@ -18,6 +16,12 @@ app.engine(
         layoutsDir: __dirname + "/views",
     })
 )
+app.post('/', async (req,res) => {
+    let prod = {...req.body}
+    await prodsCont.save(prod)
+    prods = await prodsCont.getAll()
+    io.sockets.emit('prods', prods)
+})
 
 app.set("view engine", "hbs")
 
@@ -27,21 +31,20 @@ app.get('/', (req,res) => {
     res.render('index', {y_n})
 })
 
-app.use(express.static('public'))
-const httpServer = new HttpServer(app)
-const io = new IOServer(httpServer)
-
 httpServer.listen(8080, () => {
     console.log('Escuchando correctamente el puerto 8080')
 })
 
+const msgsCont = new Contenedor('./files/msgs')
+const prodsCont = new Contenedor('./files/prods')
+let y_n = true 
+
 io.on('connect', async (socket) => {
     let msgs = await msgsCont.getAll()
-
+    let prods = await prodsCont.getAll()
     socket.on('logged', ()=>{
         socket.emit('msgs', msgs)
     })
-    
     socket.on('msg', async (msg) => {
         await msgsCont.save(msg)
         msgs = await msgsCont.getAll()

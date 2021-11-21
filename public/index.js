@@ -3,6 +3,8 @@ const socket = io()
 let send = null
 let input = null
 let mail = null
+let prods = null
+
 const mailInp = document.getElementById("mail")
 
 document.getElementById("entry").addEventListener('click', () => {
@@ -33,6 +35,11 @@ document.getElementById("entry").addEventListener('click', () => {
         empty()
     })
     socket.emit('logged')
+})
+
+socket.on('prods', products => {
+    prods = products
+    console.log(prods)
 })
 
 socket.on('msgs', msgs => {
