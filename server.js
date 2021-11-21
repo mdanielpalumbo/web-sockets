@@ -16,13 +16,7 @@ app.engine(
         layoutsDir: __dirname + "/views",
     })
 )
-app.post('/', async (req,res) => {
-    let prod = {...req.body}
-    await prodsCont.save(prod)
-    prods = await prodsCont.getAll()
-    io.sockets.emit('prods', prods)
-})
-
+app.use(express.static('public'))
 app.set("view engine", "hbs")
 
 app.set("views", "./views")
@@ -41,7 +35,8 @@ let y_n = true
 
 io.on('connect', async (socket) => {
     let msgs = await msgsCont.getAll()
-    let prods = await prodsCont.getAll()
+    let prods = [...await prodsCont.getAll()]
+    socket.emit('prods', prods)
     socket.on('logged', ()=>{
         socket.emit('msgs', msgs)
     })
@@ -49,5 +44,10 @@ io.on('connect', async (socket) => {
         await msgsCont.save(msg)
         msgs = await msgsCont.getAll()
         io.sockets.emit('msgs', msgs)
+    })
+    socket.on('prod', async (prod) => {
+        await prodsCont.save(prod)
+        prods = await prodsCont.getAll()
+        io.sockets.emit('prods', prods)
     })
 })

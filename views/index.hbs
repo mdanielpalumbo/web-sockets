@@ -10,7 +10,7 @@
 </head>
 <body id="main">
     <h2>formulario de carga de productos</h2>
-    <form action='/' method='post' class="inputs">
+    <form id="prodForm" class="inputs">
         <div class="inp">
             <label for="name">Nombre:</label>
             <input type="text" name="name" required>
@@ -23,11 +23,15 @@
             <label for="thumbnail">Link img:</label>
             <input type="text" name="thumbnail" required>
         </div>
-    <button type="submit">Subir</button>
+        <button>Subir</button>
     </form>
-    
+    <div id="prods" class="prods">
+    </div>
     <div id="log">
-        <input type="email" id="mail">
+        <div>
+            <label for="mail">Ingrese su Email para ingresar al chat</label>
+            <input type="email" id="mail">
+        </div>
         <button id="entry">entrar al chat</button>
     </div>
     <script src="/index.js"></script>
